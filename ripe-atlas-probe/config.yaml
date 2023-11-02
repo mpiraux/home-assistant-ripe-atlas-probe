@@ -1,0 +1,20 @@
+# https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
+name: RIPE Atlas Probe
+version: "0.0.1"
+slug: ripe-atlas-probe
+description: Operates a probe measuring Internet connectivity and reachability part of an open global network.
+url: "https://github.com/mpiraux/home-assistant-ripe-atlas-probe"
+arch:
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+  - i386
+init: false
+map:
+  - share:rw
+options:
+  message: "Hello world..."
+schema:
+  message: "str?"
+image: "ghcr.io/mpiraux/{arch}-home-assistant-ripe-atlas-probe"
