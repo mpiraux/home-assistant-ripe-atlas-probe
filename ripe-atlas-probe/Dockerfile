@@ -15,7 +15,7 @@ ARG ATLAS_UID=101
 ARG ATLAS_GID=999
 RUN ln -s /bin/true /bin/systemctl \
 	&& adduser --system --uid $ATLAS_UID atlas \
-	&& groupadd --force --system --gid $ATLAS_GID atlas \
+	&& addgroup -S -g $ATLAS_GID atlas \
 	&& usermod -aG atlas atlas \
 	&& apt-get update -y \
 	&& apt-get install -y libcap2-bin iproute2 openssh-client procps net-tools gosu \
