@@ -11,4 +11,26 @@ RUN \
 # Copy root filesystem
 COPY rootfs /
 
-FROM jamesits/ripe-atlas:latest
+ARG ATLAS_UID=101
+ARG ATLAS_GID=999
+RUN ln -s /bin/true /bin/systemctl \
+	&& adduser --system --uid $ATLAS_UID atlas \
+	&& groupadd --force --system --gid $ATLAS_GID atlas \
+	&& usermod -aG atlas atlas \
+	&& apt-get update -y \
+	&& apt-get install -y libcap2-bin iproute2 openssh-client procps net-tools gosu \
+	&& rm -rf /var/lib/apt/lists/*
+
+COPY --from=jamesits/ripe-atlas:latest /usr/local/atlas /usr/local/atlas
+COPY --from=jamesits/ripe-atlas:latest /usr/local/atlas /usr/local/atlas
+COPY --from=jamesits/ripe-atlas:latest /var/atlas-probe /var/atlas-probe
+COPY --from=jamesits/ripe-atlas:latest /var/atlasdata /var/atlasdata
+COPY --from=jamesits/ripe-atlas:latest /usr/local/bin/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN ln -s /usr/local/atlas/bin/ATLAS /usr/local/bin/atlas
+
+WORKDIR /var/atlas-probe
+VOLUME [ "/var/atlas-probe/etc", "/var/atlas-probe/status" ]
+
+ENTRYPOINT [ "entrypoint.sh" ]
+CMD [ "atlas" ]
