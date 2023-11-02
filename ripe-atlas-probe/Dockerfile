@@ -10,3 +10,5 @@ RUN \
 
 # Copy root filesystem
 COPY rootfs /
+
+FROM jamesits/ripe-atlas:latest
