@@ -5,7 +5,6 @@ slug: ripe-atlas-probe
 description: Operates a probe measuring Internet connectivity and reachability part of an open global network.
 url: "https://github.com/mpiraux/home-assistant-ripe-atlas-probe"
 arch:
-  - armhf
   - armv7
   - aarch64
   - amd64
