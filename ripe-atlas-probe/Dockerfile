@@ -11,29 +11,24 @@ RUN \
 # Copy root filesystem
 COPY rootfs /
 
-RUN ln -s /bin/true /bin/systemctl \
-	&& adduser --system atlas \
-	&& addgroup -S atlas \
-	&& apt-get update -y \
-	&& apt-get install -y libcap2-bin iproute2 openssh-client procps net-tools gosu \
-	&& rm -rf /var/lib/apt/lists/*
+# Rest of the Dockerfile inspired by https://github.com/CTassisF/ripe-atlas-alpine
+RUN apk add --no-cache autoconf automake g++ gcc git libtool linux-headers make openssl-dev patch sed &&\
+ git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git &&\
+ sed -i '/fakeroot.*dpkg-deb/Q' ripe-atlas-software-probe/build-config/debian/bin/make-deb &&\
+ ./ripe-atlas-software-probe/build-config/debian/bin/make-deb &&\
+ mkdir /var/atlasdata
 
-COPY --from=jamesits/ripe-atlas:latest /usr/local/atlas /usr/local/atlas
-COPY --from=jamesits/ripe-atlas:latest /usr/local/atlas /usr/local/atlas
-COPY --from=jamesits/ripe-atlas:latest /var/atlas-probe /var/atlas-probe
-COPY --from=jamesits/ripe-atlas:latest /var/atlasdata /var/atlasdata
-COPY --from=jamesits/ripe-atlas:latest /usr/local/bin/entrypoint.sh /usr/local/bin/entrypoint.sh
-
-RUN ln -s /usr/local/atlas/bin/ATLAS /usr/local/bin/atlas
-
-RUN chmod +x /usr/local/bin/* \
-	&& chown -R atlas:atlas /var/atlas-probe \
-	&& mkdir -p /var/atlasdata \
-	&& chown -R atlas:atlas /var/atlasdata \
-	&& chmod 777 /var/atlasdata
-
+COPY /atlasswprobe-*-1/usr/local/atlas/ /usr/local/atlas/
+COPY /ripe-atlas-software-probe/bin/ /usr/local/atlas/bin/
+COPY /atlasswprobe-*-1/var/atlas-probe/ /var/atlas-probe/
+RUN apk add --no-cache libcap net-tools openssh tini &&\
+ adduser -D atlas &&\
+ ln -s /usr/local/atlas/bin/ATLAS /usr/local/bin/atlas &&\
+ echo "CHECK_ATLASDATA_TMPFS=no" > /var/atlas-probe/state/config.txt &&\
+ echo "RXTXRPT=yes" >> /var/atlas-probe/state/config.txt &&\
+ setcap cap_net_raw=ep /usr/local/atlas/bb-13.3/bin/busybox
 WORKDIR /var/atlas-probe
-VOLUME [ "/var/atlas-probe/etc", "/var/atlas-probe/status" ]
-
-ENTRYPOINT [ "entrypoint.sh" ]
-CMD [ "atlas" ]
+VOLUME ["/var/atlas-probe/etc", "/var/atlas-probe/status"]
+ENTRYPOINT ["/sbin/tini", "--"]
+# Image expects a tmpfs to be mounted at /var/atlasdata
+CMD atlas
