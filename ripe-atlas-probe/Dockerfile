@@ -14,7 +14,6 @@ COPY rootfs /
 RUN ln -s /bin/true /bin/systemctl \
 	&& adduser --system atlas \
 	&& addgroup -S atlas \
-	&& usermod -aG atlas atlas \
 	&& apt-get update -y \
 	&& apt-get install -y libcap2-bin iproute2 openssh-client procps net-tools gosu \
 	&& rm -rf /var/lib/apt/lists/*
