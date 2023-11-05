@@ -19,7 +19,7 @@ RUN apk add --no-cache autoconf automake g++ gcc git libtool linux-headers make 
  mkdir /var/atlasdata
 
 COPY /atlasswprobe-*-1/usr/local/atlas/ /usr/local/atlas/
-COPY /ripe-atlas-software-probe/bin/ /usr/local/atlas/bin/
+COPY ripe-atlas-software-probe/bin/ /usr/local/atlas/bin/
 COPY /atlasswprobe-*-1/var/atlas-probe/ /var/atlas-probe/
 RUN apk add --no-cache libcap net-tools openssh tini &&\
  adduser -D atlas &&\
