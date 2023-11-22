@@ -1,0 +1,4 @@
+# https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
+name: Home Assistant RIPE Atlas Probe add-on repository
+url: "https://github.com/mpiraux/home-assistant-ripe-atlas-probe"
+maintainer: Maxime Piraux <maxime.piraux@uclouvain.be>
