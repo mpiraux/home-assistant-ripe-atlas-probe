@@ -17,5 +17,4 @@ bashio::log.info "${message:="Hello World..."}"
 
 ## Run your program
 ln -s /tmp/atlasdata /var/atlasdata
-cd /var/atlas-probe
-exec atlas
+cd /var/atlas-probe && exec atlas

@@ -1,6 +1,6 @@
 # Dockerfile inspired by https://github.com/CTassisF/ripe-atlas-alpine
 ARG BUILD_FROM
-FROM alpine:latest AS builder
+FROM $BUILD_FROM AS builder
 MAINTAINER CTassisF@users.noreply.github.com
 RUN apk add --no-cache autoconf automake g++ gcc git libtool linux-headers make openssl-dev patch sed &&\
  git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git &&\
