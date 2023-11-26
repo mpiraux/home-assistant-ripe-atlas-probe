@@ -27,7 +27,7 @@ RUN apk add --no-cache libcap net-tools openssh tini &&\
  adduser -D atlas &&\
  ln -s /usr/local/atlas/bin/ATLAS /usr/local/bin/atlas &&\
  echo "CHECK_ATLASDATA_TMPFS=no" > /var/atlas-probe/state/config.txt &&\
- echo "RXTXRPT=yes" >> /var/atlas-probe/state/config.txt &&\
+ echo "RXTXRPT=no" >> /var/atlas-probe/state/config.txt &&\
  mkdir /var/atlasdata &&\
  chmod 777 /var/atlasdata &&\
  chown -R atlas: /var/atlas-probe /var/atlasdata &&\
