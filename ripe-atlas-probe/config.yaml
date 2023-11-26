@@ -16,4 +16,5 @@ privileged:
   - NET_RAW
 tmpfs: true
 host_network: true
+apparmor: false
 image: "ghcr.io/mpiraux/{arch}-home-assistant-ripe-atlas-probe"
